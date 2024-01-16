@@ -39,3 +39,6 @@ const add = (a, b, callback) => {
 add(1, 4, (sum) => {
     console.log(sum) // Should print: 5
 })
+
+//note: In a synchronous programming model, one line runs after the next, regardless how long each line takes to execute.
+//asynchronous function: like setTimeout

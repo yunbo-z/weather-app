@@ -1,5 +1,6 @@
 const request = require('postman-request')
 const geocode = require('./utils/geocode.js')
+const forecast = require('./utils/forecast.js')
 
 // const url = 'http://api.weatherstack.com/current?access_key=48781b670b72b9bbaa54a51f7be4f331&query=48.8566,2.3522&units=m'
 
@@ -31,7 +32,23 @@ const geocode = require('./utils/geocode.js')
 // })
 
 
-geocode('boston', (error, data) => {
-    console.log('error', error)
-    console.log('data', data)
-})
+//The process.argv property returns an array containing the command-line arguments passed when the Node.js process was launched.
+const address = process.argv[2]
+if (!address) {
+    console.log('please provide an address!')
+} else {
+    //callback chaining
+    geocode(address, (error, data) => {
+        if (error) {
+            return console.log(error)//'return' will stop the execution
+        }
+        forecast(data.latitude, data.longitude, (error, forecastData) => {
+            if (error) {
+                return console.log(error)
+            }
+            console.log(data.location)
+            console.log(forecastData)
+        })
+    })
+}
+
