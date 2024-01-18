@@ -38,15 +38,15 @@ if (!address) {
     console.log('please provide an address!')
 } else {
     //callback chaining
-    geocode(address, (error, data) => {
+    geocode(address, (error, { latitude, longitude, location } ) => {//Distructuring+ES6:default function parameters
         if (error) {
             return console.log(error)//'return' will stop the execution
         }
-        forecast(data.latitude, data.longitude, (error, forecastData) => {
+        forecast(latitude, longitude, (error, forecastData) => {
             if (error) {
                 return console.log(error)
             }
-            console.log(data.location)
+            console.log(location)
             console.log(forecastData)
         })
     })
