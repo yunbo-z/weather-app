@@ -1,16 +1,19 @@
 const express = require('express')
 const path = require('path')//path is the core module in nodejs so we don't need to install it
+const hbs = require('hbs')
 
 const app = express()
 
 //define paths for Express config
 // __filename and __dirname are used to get the filename and directory name of the currently executing file
 const publicDirectoryPath = path.join(__dirname, '../public')
-const viewPath = path.join(__dirname, '../templates')
+const viewPath = path.join(__dirname, '../templates/views')
+const partialsPath = path.join(__dirname, '../templates/partials')
 
 //setup handlebars engine and views location
-app.set('view engine', 'hbs')
+app.set('view engine', 'hbs')//set the engine extension
 app.set('views', viewPath)
+hbs.registerPartials(partialsPath)//registerPartials method provides a quick way to load all partials from a specific directory
 
 //setup static directory to serve
 //app.use:customize your server
@@ -32,7 +35,22 @@ app.use(express.static(publicDirectoryPath))
 // })
 app.get('', (req, res) => {
     res.render('index', {
+        title: 'weather',
         name: 'lili'
+    })
+})
+
+app.get('/about', (req, res) => {
+    res.render('about', {
+        title : 'About Page'
+    })
+})
+
+
+app.get('/help', (req, res) => {
+    res.render('help', {
+        title: 'Help Page',
+        message: 'Here is the help page'
     })
 })
 
@@ -40,12 +58,6 @@ app.get('/weather', (req, res) => {
     res.send({
         forecast:'for',
         location:'paris'
-    })
-})
-
-app.get('/help', (req, res) => {
-    res.render('help', {
-        message: 'Here is the help page'
     })
 })
 
