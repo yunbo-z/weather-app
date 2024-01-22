@@ -1,6 +1,8 @@
 const express = require('express')
 const path = require('path')//path is the core module in nodejs so we don't need to install it
 const hbs = require('hbs')
+const forecast = require('./utils/forecast')
+const geocode = require('./utils/geocode')
 
 const app = express()
 
@@ -30,9 +32,6 @@ app.use(express.static(publicDirectoryPath))
 //         age:24
 //     })
 // })
-// app.get('/about', (req, res) => {
-//     res.send('<h1>about page</h1>')
-// })
 app.get('', (req, res) => {
     res.render('index', {
         title: 'weather',
@@ -60,12 +59,28 @@ app.get('/weather', (req, res) => {
             error: 'You must provide an address!'
         })
     }
-    console.log(req.query.address)
-    res.send({
-        forecast:'for',
-        location:'paris',
-        address: req.query.address
+    geocode(req.query.address, (error, {latitude, longitude, location}) => {
+        if (error) {
+            res.send({error})
+        }
+        forecast(latitude, longitude, (error, forecastData) => {
+            if (error) {
+                res.send({error})
+            }
+            res.send({
+                forecast: forecastData,
+                location,
+                address: req.query.address
+            })
+        })
     })
+
+    // console.log(req.query.address)
+    // res.send({
+    //     forecast:'for',
+    //     location:'paris',
+    //     address: req.query.address
+    // })
 })
 
 app.get('/products', (req, res) => {
