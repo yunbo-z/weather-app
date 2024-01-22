@@ -17,7 +17,7 @@ hbs.registerPartials(partialsPath)//registerPartials method provides a quick way
 
 //setup static directory to serve
 //app.use:customize your server
-//static: the assets are static
+//static: the assets are static,  express.static: middleware
 app.use(express.static(publicDirectoryPath))
 
 //Routing refers to determining how an application responds to a client request to a particular endpoint
@@ -55,11 +55,31 @@ app.get('/help', (req, res) => {
 })
 
 app.get('/weather', (req, res) => {
+    if(!req.query.address){
+        return res.send({
+            error: 'You must provide an address!'
+        })
+    }
+    console.log(req.query.address)
     res.send({
         forecast:'for',
-        location:'paris'
+        location:'paris',
+        address: req.query.address
     })
 })
+
+app.get('/products', (req, res) => {
+    if(!req.query.search){
+        return res.send({//return will stop the excution, to prevent excuting the following send, so that there will not have two times response being sent 
+            error: 'you must provide a search item'
+        })
+    }
+    console.log(req.query.search)//req.query property takes the query parameter in the url
+    res.send({
+        products: []
+    })
+})
+
 
 app.get('/help/*', (req, res) => {
     res.render('404page', {
