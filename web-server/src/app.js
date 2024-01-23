@@ -59,7 +59,8 @@ app.get('/weather', (req, res) => {
             error: 'You must provide an address!'
         })
     }
-    geocode(req.query.address, (error, {latitude, longitude, location}) => {
+    //should give a default value of the distructive object to prevent no input error
+    geocode(req.query.address, (error, {latitude, longitude, location} = {}) => {
         if (error) {
             res.send({error})
         }

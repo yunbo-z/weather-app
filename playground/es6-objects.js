@@ -26,7 +26,8 @@ console.log(productLabel)
 console.log(stock)
 console.log(rating)
 
-const transacation = ( type, { label, stock }) => {
+//{label, stock} = {} this gives defaut value of the object, 
+const transacation = ( type, { label = 4, stock =3 } = {}) => {
     console.log(type, label, stock)
 }
 transacation('order', product)
