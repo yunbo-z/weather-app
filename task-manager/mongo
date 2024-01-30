@@ -1,0 +1,13 @@
+sudo docker run -d --name mongodb -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=your_own_password mongo 
+
+fedora 38 install mongodb 7.0
+sudo tee /etc/yum.repos.d/mongodb.repo << "EOF" > /dev/null
+[mongodb]
+name=MongoDB
+baseurl=https://repo.mongodb.org/yum/redhat/9/mongodb-org/7.0/${basearch}/
+gpgkey=https://www.mongodb.org/static/pgp/server-7.0.asc
+EOF
+sudo rpm --import https://www.mongodb.org/static/pgp/server-7.0.asc
+sudo dnf install mongodb-org
+sudo systemctl enable mongod.service
+sudo systemctl restart mongod.service

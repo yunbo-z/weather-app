@@ -1,3 +1,76 @@
-h1{
-    color: grey;
+body{
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: azure;
+}
+#header-block{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
+    padding: 30px;
+}
+#header-block a{
+    text-decoration: none;
+    color: gray;
+    font-weight: bold;
+    font-size: large;
+    cursor: pointer;
+}
+#header-block a:hover{
+    color: rgb(183, 182, 182);
+}
+#header-title{
+    display: flex;
+    justify-content: center;
+    color: gray;
+    font-size: xx-large;
+    font-weight: bolder;
+}
+#welcome-title{
+    color: gray;
+    font-size: medium;
+    margin-top: 10px;
+}
+
+input[type="text" i]{
+    background-color: rgb(219, 228, 223);
+    border: none;
+    height: 30px;
+    width: 200px;
+    border-radius: 10px;
+    color: gray;
+}
+#search-button{
+    height: 30px;
+    border-radius: 10px;
+    border: none;
+    background-color: rgb(219, 228, 223);
+    color: rgb(104, 104, 104);
+    font-weight: 900;
+    cursor: pointer;
+}
+#search-button:hover{
+    background-color: rgb(207, 220, 233);
+    
+}
+
+
+#weather-search-block{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 30vh;
+    align-items: center;
+}
+
+
+#footer-block{
+    position: absolute;
+    bottom: 0;
+    color: gray;
 }

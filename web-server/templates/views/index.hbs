@@ -3,22 +3,25 @@
 
 <head>
     <link rel="stylesheet" href="/css/styles.css">
-    
+
 </head>
 
 <body>
     {{>header}}
-    <h4>welcome {{ name }}</h4>
-    <form>
-        <input type="text" name="aname" placeholder="enter an address">
-        <button>search</button>
-    </form>
-    <p id="location-message">hh</p>
-    <p id="forecast-message"></p>
+    <div id="welcome-title">welcome {{ name }}</div>
+    <div id="weather-search-block">
+        <form>
+            <input type="text" name="aname" placeholder="enter an address">
+            <button id="search-button">search</button>
+        </form>
+        <p id="location-message">Enter an address to check the forecast</p>
+        <p id="forecast-message"></p>
+    </div>
+
 
     {{>footer}}
     {{!-- script should be excuted after form is submited --}}
-    <script src="/js/app.js"></script> 
+    <script src="/js/app.js"></script>
 </body>
 
 </html>

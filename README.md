@@ -21,3 +21,6 @@ web-server:
         OPTIONS:
         TRACE:
         PATCH:
+MongoDB:
+    mongosh: sudo docker exec -it mongodb mongosh
+    docker: sudo docker run -d --name mongodb -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=your_own_password mongo 
