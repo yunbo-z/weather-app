@@ -9,17 +9,15 @@ const { MongoClient, ObjectID } = require('mongodb')
 
 
 const connectionURL = 'mongodb://root:your_own_password@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.1.3'
-const databaseName = 'task-manager'
-
 
 const client = new MongoClient(connectionURL)
 
 async function main() {
     //use connect method to connect to the server
-    await client.connect();
-    console.log('connected successfully to the server!')
-
-    const db = client.db(databaseName)
+    // await client.connect();
+    
+    const db = client.db('task-manager')
+    const collectionName = db.collection('users')
     //insertOne method expect a object as its first argument
     // await db.collection('tasks').insertMany([
     //     {
@@ -37,12 +35,22 @@ async function main() {
     // })
 
     // find document
-    const find = await db.collection('users').find({ age: '23' })
-    console.log(find.toArray((user) => {return user}))
-    return 'done'
+    const query = { age: 23 }
+    const users = collectionName.find(query)
+    if ((await collectionName.countDocuments(query)) === 0){
+        console.log('no documents found!')
+    }
+
+    //for await...of syntax: iterate through results rather than returning all documents at once.
+    // for await (const doc of users) {
+    //     console.dir(doc)
+    // }
+
+    // all documents matched by a query to be held in memory at the same time
+    console.log(await users.toArray())
 }
 
 main()
     .then(console.log)
-    // .catch(console.error)
-    // .finally(() => client.close());
+    .catch(console.dir)
+    .finally(() => client.close());
