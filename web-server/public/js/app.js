@@ -11,7 +11,6 @@ const locationMessage = document.querySelector('#location-message')
 const forecastMessage = document.querySelector('#forecast-message')
 
 
-
 // thr function run when the event occurs
 weatherForm.addEventListener('submit', (e) => {
     e.preventDefault()//prevent the event happened after event occurs

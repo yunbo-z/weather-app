@@ -15,31 +15,24 @@ const client = new MongoClient(connectionURL)
 async function main() {
     //use connect method to connect to the server
     // await client.connect();
-    
+
     const db = client.db('task-manager')
     const collectionName = db.collection('users')
-    //insertOne method expect a object as its first argument
-    // await db.collection('tasks').insertMany([
-    //     {
-    //         discription: 'book 1',
-    //         completed: false,
-    //     }, {
-    //         discription: 'book 2',
-    //         completed: true
-    //     }
-    // ], (error, result) => {
-    //     if(error) {
-    //         console.log('unable to connect')
-    //     }
-    //     console.log(result.ops)
-    // })
 
     // find document
-    const query = { age: 23 }
-    const users = collectionName.find(query)
-    if ((await collectionName.countDocuments(query)) === 0){
-        console.log('no documents found!')
+    const filter = { age: 23 }
+    // Set the upsert option to insert a document if no documents match the filter
+    const options = { upsert: true }
+    const updateDoc = {
+        $set: {
+            plot: `A harvest of random numbers, such as: ${Math.random()}`
+        }
     }
+    const result = await collectionName.updateOne(filter, updateDoc, options)
+
+    console.log(
+        `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`,
+    );
 
     //for await...of syntax: iterate through results rather than returning all documents at once.
     // for await (const doc of users) {
@@ -47,7 +40,7 @@ async function main() {
     // }
 
     // all documents matched by a query to be held in memory at the same time
-    console.log(await users.toArray())
+    // console.log(await users.toArray())
 }
 
 main()

@@ -1,8 +1,5 @@
 const request = require('postman-request')
-
-//
 // Goal: Create a reusable function for getting the forecast
-//
 // 1. Setup the "forecast" function in utils/forecast.js
 // 2. Require the function in app.js and call it as shown below
 // 3. The forecast function should have three potential calls to callback:
