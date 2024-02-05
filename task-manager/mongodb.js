@@ -22,13 +22,13 @@ async function main() {
     // find document
     const filter = { age: 23 }
     // Set the upsert option to insert a document if no documents match the filter
-    const options = { upsert: true }
-    const updateDoc = {
-        $set: {
-            plot: `A harvest of random numbers, such as: ${Math.random()}`
-        }
-    }
-    const result = await collectionName.updateOne(filter, updateDoc, options)
+    // const options = { upsert: true }
+    // const updateDoc = {
+    //     $set: {
+    //         plot: `A harvest of random numbers, such as: ${Math.random()}`
+    //     }
+    // }
+    const result = await collectionName.deleteOne(filter)
 
     console.log(
         `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`,
