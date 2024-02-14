@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 const validator = require('validator')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -19,12 +20,12 @@ const UserSchema = new mongoose.Schema({
             if (!validator.isEmail(value)) {
                 throw new Error('Wrong Email Format')
             }
-        }
+        },
     },
     password: {
         type: String,
         required: true,
-        minLength:7,
+        minLength: 7,
         trim: true,
         validate(value) {
             if (value.toLowerCase().includes("password")) {
@@ -39,10 +40,28 @@ const UserSchema = new mongoose.Schema({
                 throw new Error('Age must greater than 0!')
             }
         }
-    }
+    },
+    tokens: [{
+        token: {
+            type: String,
+            required: true
+        }
+    }]
 })
+
+UserSchema.methods.generateAuthToken = async function () {
+    const user = this
+    const token = jwt.sign({ _id: user._id.toString() }, 'helloworld')
+
+    user.tokens = user.tokens.concat({ token })
+    console.log(user.tokens)
+    await user.save()
+
+    return token
+}
+
 //defines a new static method named findByCredentials on the UserSchema.
-UserSchema.statics.findByCredentials = async (email, password) => {
+UserSchema.statics.findByCredentials = async(email, password) => {
     const user = await User.findOne({ email })
 
     if (!user) {
@@ -52,16 +71,15 @@ UserSchema.statics.findByCredentials = async (email, password) => {
     const isMatch = await bcrypt.compare(password, user.password)
 
     if (!isMatch) {
-        throw new Error ('Unable to login')
+        throw new Error('Unable to login!')
     }
-
     return user
 }
 
 //hash the plain text password before saving
 UserSchema.pre('save', async function (next) {
     const user = this
-    
+
     if (user.isModified('password')) {
         user.password = await bcrypt.hash(user.password, 8)
     }
