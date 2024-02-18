@@ -49,6 +49,18 @@ const UserSchema = new mongoose.Schema({
     }]
 })
 
+//toJSON method runs even though we're never explicity calling this
+UserSchema.methods.toJSON = function () {
+    const user = this
+    const userObject = user.toObject()
+
+    delete userObject.password
+    delete userObject.tokens
+
+    return userObject
+}
+
+//methods use on the instance and individual user
 UserSchema.methods.generateAuthToken = async function () {
     const user = this
     const token = jwt.sign({ _id: user._id.toString() }, 'helloworld')

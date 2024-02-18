@@ -28,11 +28,3 @@ app.listen(port, () => {
 })
 
 
-const pet = {
-    name : 'Hal'
-}
-pet.toJSON = function(){
-    return pet
-}
-
-console.log(JSON.stringify(pet))
