@@ -67,7 +67,7 @@ router.get('/users/:id', async (req, res) => {
     }
 })
 
-router.patch('/users/:id', async (req, res) => {
+router.patch('/users/me', auth, async (req, res) => {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['name', 'age', 'email', 'password']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
@@ -75,31 +75,35 @@ router.patch('/users/:id', async (req, res) => {
         return res.status(400).send({ error: 'Invalid Updates!' })
     }
     try {
-        const user = await User.findById(req.params.id)
-        updates.forEach((update) => user[update] = req.body[update])
-        await user.save()
+        // const user = await User.findById(req.params.id)
+        updates.forEach((update) => req.user[update] = req.body[update])
+        await req.user.save()
 
         // //new: true: This option tells Mongoose to return the document after it has been updated. Without this option, Mongoose would return the document as it was before the update was applied.
         // //runValidators: true: This option forces Mongoose to run schema validation rules against the new document data (req.body) before applying the update.
         // const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
-        if (!user) {
-            return res.status(404).send(e)
-        }
-        res.send(user)
+        // if (!user) {
+        //     return res.status(404).send(e)
+        // }
+        res.send(req.user)
     } catch (e) {
         res.status(500).send(e)
     }
 })
 
-router.delete('/users/:id', async (req, res) => {
+router.delete('/users/me', auth, async (req, res) => {
     try {
-        const user = await User.findByIdAndDelete(req.params.id)
-        if (!user) {
-            return res.status(404).send()
-        }
-        res.send(user)
+        // const user = await User.findByIdAndDelete(req.user._id)
+        // if (!user) {
+        //     return res.status(404).send()
+        // }
+        req.user = {}
+        console.log('userremove: ' + req.user)
+
+        res.send(req.user)
     } catch (e) {
-        res.status(500).send()
+        console.log('hh')
+        res.status(500).send(e)
     }
 })
 
